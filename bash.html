@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicous - Food Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSB7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #fff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.1);
+            --border-radius: 15px;
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: var(--secondary-color);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            width: 100px;
+            height: 40px;
+            background: url('') no-repeat;
+        }
+
+        .pannel-ops {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pannel-ops p {
+            color: #333;
+            font-size: 0.9em;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            transition: var(--transition);
+        }
+
+        .pannel-ops p:hover {
+            background: #e0e0e0;
+        }
+
+        .hero-section {
+            background: url('https://img.freepik.com/free-vector/hand-drawn-pizza-horizontal-banner_23-2150267792.jpg?t=st=1742572936~exp=1742576536~hmac=9d4d3c74ec693d252212e88f823b2ff747197a3faa067f26806b329f4f3ecfb1&w=996') center/cover no-repeat;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .hero-msg {
+            color: var(--secondary-color);
+            font-size: 1.8em;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .offer-timer {
+            text-align: center;
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 10px;
+            margin: 0 20px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .food-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .box {
+            background: var(--secondary-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            padding: 15px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+        }
+
+        .box-content h2 {
+            font-size: 1.2em;
+            color: #222;
+            margin: 8px 0;
+        }
+
+        .box-content p {
+            color: #777;
+            font-size: 0.85em;
+        }
+
+        .box-img {
+            height: 160px;
+            background-size: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .trending-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ffeb3b;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background: linear-gradient(45deg, var(--primary-color), #ff7878);
+            color: var(--secondary-color);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        .add-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-summary {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--secondary-color);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 50;
+        }
+
+        .cart-summary span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .cart-summary button {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cart-summary button:hover {
+            background: #e63939;
+        }
+
+        .cart-section {
+            margin: 20px;
+            padding: 20px;
+            background: var(--secondary-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .cart-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+
+        .remove-btn {
+            background: #ff7878;
+            color: var(--secondary-color);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .delivery-progress {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background: #eee;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4caf50;
+            transition: width 0.3s;
+        }
+
+        .spin-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spin-container {
+            background: var(--secondary-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            width: 300px;
+        }
+
+        .spin-wheel {
+            width: 200px;
+            height: 200px;
+            background: url('https://via.placeholder.com/200x200?text=Spin+Wheel') no-repeat center/cover;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            animation: spin 3s ease-in-out;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(1080deg); }
+        }
+
+        .spin-btn, .order-btn, .share-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .spin-btn {
+            background: var(--primary-color);
+        }
+
+        .spin-btn:hover {
+            background: #e63939;
+        }
+
+        .order-btn {
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            display: block;
+            margin: 20px auto;
+        }
+
+        .order-btn:hover {
+            background: linear-gradient(45deg, #388e3c, #4caf50);
+        }
+
+        .share-btn {
+            background: #1e90ff;
+            margin: 10px auto;
+        }
+
+        .share-btn:hover {
+            background: #1c86ee;
+        }
+
+        .footer-container {
+            background: #222;
+            color: var(--secondary-color);
+            padding: 30px 15px;
+        }
+
+        .footer-logo h2 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .footer-column {
+            margin: 10px;
+        }
+
+        .footer-column h4 {
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin: 5px 0;
+        }
+
+        .footer-column ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-icons a {
+            color: var(--secondary-color);
+            font-size: 1.3em;
+        }
+
+        .app-links img {
+            width: 110px;
+            margin: 8px 5px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .country-btn, .language-btn {
+            background: #444;
+            color: var(--secondary-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .country-btn:hover, .language-btn:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo"></div>
+        <nav class="pannel-ops">
+            <p><i class="fa-solid fa-bars"></i> All</p>
+            <p><i class="fa-solid fa-bag-shopping"></i> Delicous Corporate</p>
+            <p><i class="fa-solid fa-magnifying-glass"></i> Search</p>
+            <p><i class="fa-regular fa-user"></i> Sign In</p>
+            <p><i class="fa-solid fa-cart-shopping"></i> Orders</p>
+        </nav>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-msg">Craving Something Tasty? Order Now! 🍔</div>
+    </section>
+
+    <div class="offer-timer">Hurry! Offer Ends in: <span id="timer">10:00</span></div>
+
+    <section class="food-items" id="foodItems"></section>
+
+    <div class="cart-summary" id="cartSummary">
+        <span id="cartCount">0 Items</span>
+        <span id="cartTotal">₹0.00</span>
+        <button onclick="showCart()">View Cart</button>
+    </div>
+
+    <section class="cart-section" id="cartSection">
+        <h2>Your Cart 🛒</h2>
+        <div class="delivery-progress">
+            <p id="progressText">Add ₹500 more for free delivery! 🚚</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+        <div id="cartItems"></div>
+        <div class="cart-total" id="totalPrice">Total: ₹0.00</div>
+        <button class="order-btn" onclick="showSpinWheel()">Place Order</button>
+    </section>
+
+    <div class="spin-overlay" id="spinOverlay">
+        <div class="spin-container">
+            <h3>Spin to Win a Discount! 🎉</h3>
+            <div class="spin-wheel" id="spinWheel"></div>
+            <p id="spinResult">Click below to spin!</p>
+            <button class="spin-btn" onclick="spinWheel()">Spin Now</button>
+            <button class="order-btn" onclick="finalizeOrder()" style="display: none;" id="finalizeBtn">Finalize Order</button>
+        </div>
+    </div>
+
+    <footer class="footer-container">
+        <div class="footer-logo">
+            <h2>Delicous</h2>
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>ABOUT Delicous</h4>
+                <ul>
+                    <li><a href="#">Who We Are</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Work With Us</a></li>
+                    <li><a href="#">Investor Relations</a></li>
+                    <li><a href="#">Report Fraud</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>ZOMAVERSE</h4>
+                <ul>
+                    <li><a href="#">Delicous</a></li>
+                    <li><a href="#">Blinkit</a></li>
+                    <li><a href="#">District</a></li>
+                    <li><a href="#">Feeding India</a></li>
+                    <li><a href="#">Hyperpure</a></li>
+                    <li><a href="#">Zomato Live</a></li>
+                    <li><a href="#">Zomaland</a></li>
+                    <li><a href="#">Weather Union</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>FOR RESTAURANTS</h4>
+                <ul>
+                    <li><a href="#">Partner With Us</a></li>
+                    <li><a href="#">Apps For You</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>LEARN MORE</h4>
+                <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Terms</a></li>
+                </ul>
+            </div>
+            <div class="footer-column social-links">
+                <h4>SOCIAL LINKS</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+                <div class="app-links">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Download_on_the_App_Store_Badge.svg/250px-Download_on_the_App_Store_Badge.svg.png" alt="App Store">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Get_it_on_Google_play.svg/250px-Get_it_on_Google_play.svg.png" alt="Google Play">
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <button class="country-btn"><i class="fas fa-flag"></i> India</button>
+            <button class="language-btn"><i class="fas fa-globe"></i> English</button>
+        </div>
+    </footer>
+
+    <script>
+        const foodItems = [
+            { id: 1, name: "Pizza Hut", price: 350, desc: "4.2 (4.4K+ ratings) • ₹350 for two • Pizza", img: "../../Pictures/Screenshots/hut.png", trending: true },
+            { id: 2, name: "KFC", price: 400, desc: "4.2 (17K+ ratings) • ₹400 for two • Burgers, Fast Food", img: "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/FOOD_CATALOG/IMAGES/CMS/2024/9/11/9e5902f5-c942-4371-99cf-433bee88b8db_5463d28f-6503-4666-af67-419ebe262289.jpg" },
+            { id: 3, name: "McDonald's", price: 400, desc: "4.4 (18K+ ratings) • ₹400 for two • Burgers, Beverages", img: "https://via.placeholder.com/300x160?text=McDonalds", trending: true },
+            { id: 4, name: "Di Table 9 New", price: 300, desc: "4.3 (26K+ ratings) • ₹300 for two • Biryani, South Indian", img: "https://via.placeholder.com/300x160?text=Di+Table+9" },
+            { id: 5, name: "Red Bucket Biryani", price: 250, desc: "4.2 (1.5K+ ratings) • ₹250 for two • Biryani", img: "https://via.placeholder.com/300x160?text=Red+Bucket+Biryani" },
+            { id: 6, name: "Ice Cream Desserts", price: 200, desc: "4.4 (1.5K+ ratings) • ₹200 for two • Ice Cream, Desserts", img: "https://via.placeholder.com/300x160?text=Ice+Cream" },
+            { id: 7, name: "Dumont Creamery", price: 200, desc: "4.5 (530 ratings) • ₹200 for two • Indian", img: "https://via.placeholder.com/300x160?text=Dumont+Creamery" },
+            { id: 8, name: "Tikka Medium Pizza", price: 400, desc: "4.1 (137 ratings) • ₹400 for two", img: "https://via.placeholder.com/300x160?text=Tikka+Pizza" }
+        ];
+
+        let cart = [];
+        let orders = [];
+        let currentDiscount = 0;
+
+        const renderFoodItems = () => {
+            const foodItemsDiv = document.getElementById('foodItems');
+            foodItemsDiv.innerHTML = foodItems.map(item => `
+                <article class="box">
+                    <div class="box-content">
+                        ${item.trending ? '<div class="trending-badge">Trending Now 🔥</div>' : ''}
+                        <h2>${item.name}</h2>
+                        <div class="box-img" style="background: url('${item.img}') no-repeat center/cover;"></div>
+                        <p>${item.desc}</p>
+                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                    </div>
+                </article>
+            `).join('');
+        };
+
+        const startTimer = () => {
+            let timeLeft = 600;
+            const timer = document.getElementById('timer');
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
+                if (timeLeft < 0) {
+                    clearInterval(interval);
+                    timer.textContent = "Offer Ended!";
+                }
+            }, 1000);
+        };
+
+        const addToCart = (itemId) => {
+            const item = foodItems.find(f => f.id === itemId);
+            const itemInCart = cart.find(x => x.item.id === itemId);
+            if (itemInCart) {
+                itemInCart.qty++;
+            } else {
+                cart.push({ item, qty: 1 });
+            }
+            updateCart();
+        };
+
+        const removeFromCart = (id) => {
+            const index = cart.findIndex(item => item.item.id === id);
+            if (index !== -1) {
+                cart[index].qty--;
+                if (cart[index].qty === 0) cart.splice(index, 1);
+            }
+            updateCart();
+        };
+
+        const updateCart = () => {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const totalDiv = document.getElementById('totalPrice');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+
+            let total = 0;
+            let itemCount = 0;
+            cartItemsDiv.innerHTML = cart.map(cartItem => {
+                const itemPrice = cartItem.item.price * cartItem.qty;
+                total += itemPrice;
+                itemCount += cartItem.qty;
+                return `
+                    <div class="cart-item">
+                        <span>${cartItem.item.name} (x${cartItem.qty})</span>
+                        <span>₹${itemPrice.toFixed(2)}</span>
+                        <button class="remove-btn" onclick="removeFromCart(${cartItem.item.id})">Remove</button>
+                    </div>
+                `;
+            }).join('');
+
+            totalDiv.textContent = `Total: ₹${total.toFixed(2)}`;
+            cartCount.textContent = `${itemCount} Items`;
+            cartTotal.textContent = `₹${total.toFixed(2)}`;
+
+            const freeDeliveryThreshold = 500;
+            const progress = Math.min((total / freeDeliveryThreshold) * 100, 100);
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = total < freeDeliveryThreshold
+                ? `Add ₹${(freeDeliveryThreshold - total).toFixed(2)} more for free delivery! 🚚`
+                : 'Yay! You get free delivery! 🎉';
+        };
+
+        const showCart = () => {
+            document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        const showSpinWheel = () => {
+            if (!cart.length) {
+                alert("Your cart is empty! Add some food first.");
+                return;
+            }
+            document.getElementById('spinOverlay').style.display = 'flex';
+        };
+
+        const spinWheel = () => {
+            const spinWheel = document.getElementById('spinWheel');
+            const spinResult = document.getElementById('spinResult');
+            const finalizeBtn = document.getElementById('finalizeBtn');
+            const discounts = [5, 10, 15, 0, 20];
+            currentDiscount = discounts[Math.floor(Math.random() * discounts.length)];
+
+            spinWheel.style.animation = 'spin 3s ease-in-out';
+            setTimeout(() => {
+                spinResult.textContent = currentDiscount > 0
+                    ? `You won ${currentDiscount}% off! 🎉`
+                    : 'Better luck next time! 😊';
+                document.querySelector('.spin-btn').style.display = 'none';
+                finalizeBtn.style.display = 'block';
+            }, 3000);
+        };
+
+        const finalizeOrder = () => {
+            let total = cart.reduce((sum, item) => sum + item.item.price * item.qty, 0);
+            if (currentDiscount > 0) {
+                total *= (1 - currentDiscount / 100);
+                alert(`Discount of ${currentDiscount}% applied! New Total: ₹${total.toFixed(2)}`);
+            }
+
+            const order = {
+                orderId: orders.length + 1,
+                items: [...cart],
+                total,
+                date: new Date().toISOString()
+            };
+            orders.push(order);
+            alert(`Order placed! Order ID: ${order.orderId}, Total: ₹${total.toFixed(2)}\nWe'll deliver soon!`);
+
+            const cartSection = document.getElementById('cartSection');
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'share-btn';
+            shareBtn.textContent = 'Share Your Order! 📱';
+            shareBtn.onclick = () => {
+                const orderText = `I just ordered from Delicous! Order ID: ${order.orderId}, Total: ₹${total.toFixed(2)} 🍔`;
+                const shareData = {
+                    title: 'My Delicous Order',
+                    text: orderText,
+                    url: window.location.href
+                };
+                if (navigator.share && navigator.canShare?.(shareData)) {
+                    navigator.share(shareData).catch(() => alert(`Couldn't share! Here's your order: ${orderText}`));
+                } else {
+                    alert(`Sharing not supported! Here's your order: ${orderText}`);
+                }
+            };
+            cartSection.appendChild(shareBtn);
+
+            cart = [];
+            updateCart();
+            document.getElementById('spinOverlay').style.display = 'none';
+        };
+
+        renderFoodItems();
+        updateCart();
+        startTimer();
+
+        
+    </script>
+</body>
+</html>
